@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:7 AS builder
 
 ARG BROKER_J_VERSION=7.1.4
 ARG WORKDIR=/work
@@ -11,4 +11,4 @@ RUN tar xf ./apache-qpid-broker-j.tar.gz -C ${WORKDIR}/out --strip-components=2 
 
 FROM openjdk:11-jre-slim
 ARG WORKDIR=/work
-COPY --from=0 ${WORKDIR}/out /usr/local/
+COPY --from=builder ${WORKDIR}/out /usr/local/
