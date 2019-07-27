@@ -33,7 +33,7 @@ ENV QPID_HOME=${QPID_INSTALL_DIR}
 ENV QPID_WORK=${QPID_WORK_DIR}
 
 # Create qpid user and group
-RUN groupadd --gid 1000 qpid && useradd --uid 1000 --home-dir ${QPID_WORK_DIR} --create-home --gid qpid qpid
+RUN groupadd --system --gid 1000 qpid && useradd --system --uid 1000 --home-dir ${QPID_WORK_DIR} --create-home --no-log-init --gid qpid qpid
 WORKDIR ${QPID_WORK_DIR}
 
 # Copy qpid binaries from build stage to /usr/local
