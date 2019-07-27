@@ -41,6 +41,7 @@ COPY ./docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 USER qpid:qpid
-EXPOSE 5671 5672
+EXPOSE 5672 8080
+VOLUME ${QPID_WORK_DIR}
 
 CMD ["qpid-server"]
