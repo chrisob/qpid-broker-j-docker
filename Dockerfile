@@ -28,10 +28,13 @@ ARG BUILD_DIR
 ARG QPID_INSTALL_DIR=/usr/local
 ARG QPID_WORK_DIR=/var/lib/qpid
 
-WORKDIR ${QPID_INSTALL_DIR}
+# Set env vars expected by qpid
+ENV QPID_HOME=${QPID_INSTALL_DIR}
+ENV QPID_WORK=${QPID_WORK_DIR}
 
 # Create qpid user and group
-RUN groupadd -r qpid && useradd -r -d ${QPID_WORK_DIR} -m -g qpid qpid
+RUN groupadd --gid 1000 qpid && useradd --uid 1000 --home-dir ${QPID_WORK_DIR} --create-home --gid qpid qpid
+WORKDIR ${QPID_WORK_DIR}
 
 # Copy qpid binaries from build stage to /usr/local
 RUN mkdir -p ${QPID_INSTALL_DIR}
