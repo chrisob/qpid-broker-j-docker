@@ -40,6 +40,9 @@ WORKDIR ${QPID_WORK_DIR}
 RUN mkdir -p ${QPID_INSTALL_DIR}
 COPY --from=builder ${BUILD_DIR}/out ${QPID_INSTALL_DIR}
 
+# Copy initial-config.json
+COPY initial-config.json ${QPID_HOME}/etc/
+
 COPY ./docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
@@ -47,4 +50,4 @@ USER qpid:qpid
 EXPOSE 5672 8080
 VOLUME ${QPID_WORK_DIR}
 
-CMD ["qpid-server"]
+CMD ["qpid-server", "--initial-config-path", "${QPID_HOME}/etc/initial-config.json", "--store-type", "Memory"]
