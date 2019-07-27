@@ -3,7 +3,7 @@ ARG BUILD_DIR=/out
 
 #############
 # Build image
-FROM centos:7 AS builder
+FROM alpine AS builder
 
 ARG BUILD_DIR
 ARG BROKER_J_VERSION=7.1.4
@@ -11,12 +11,13 @@ ARG BROKER_J_VERSION=7.1.4
 WORKDIR ${BUILD_DIR}
 
 # Download Broker-J tarball
-RUN curl -o apache-qpid-broker-j.tar.gz https://archive.apache.org/dist/qpid/broker-j/${BROKER_J_VERSION}/binaries/apache-qpid-broker-j-${BROKER_J_VERSION}-bin.tar.gz
+ADD https://archive.apache.org/dist/qpid/broker-j/${BROKER_J_VERSION}/binaries/apache-qpid-broker-j-${BROKER_J_VERSION}-bin.tar.gz apache-qpid-broker-j.tar.gz
 # TODO: verify PGP signature?
 
 # Extract bin and lib dirs to ./out/
 RUN mkdir ./out
-RUN tar xf apache-qpid-broker-j.tar.gz -C ${BUILD_DIR}/out --strip-components=2 qpid-broker/${BROKER_J_VERSION}
+RUN apk add tar
+RUN tar xf apache-qpid-broker-j.tar.gz -C ${BUILD_DIR}/out --strip-components=2 qpid-broker/${BROKER_J_VERSION}/
 
 
 #############
