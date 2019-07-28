@@ -54,4 +54,4 @@ USER qpid:qpid
 EXPOSE 5672 8080
 VOLUME ${QPID_WORK_DIR}
 
-CMD ["qpid-server", "--initial-config-path", "${QPID_HOME}/etc/initial-config.json", "--store-type", "Memory"]
+CMD ["qpid-server", "--initial-config-path", "${QPID_HOME}/etc/initial-config.json"]
