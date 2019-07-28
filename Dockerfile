@@ -25,6 +25,18 @@ RUN tar xf ${BUILD_DIR}/apache-qpid-broker-j.tar.gz -C ${BUILD_DIR}/out --strip-
 # Final image
 FROM openjdk:11-jre-slim
 
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+LABEL org.label-schema.build-date=${BUILD_DATE} \
+      org.label-schema.name="qpid-broker-j" \
+      org.label-schema.description="Docker image for Apache Qpid Broker-J" \
+      org.label-schema.vcs-ref=${VCS_REF} \
+      org.label-schema.vcs-url="https://www.github.com/chrisob/qpid-broker-j-docker" \
+      org.label-schema.version=${VERSION} \
+      org.label-schema.schema-version="1.0"
+
 ARG BUILD_DIR
 ARG QPID_INSTALL_DIR=/usr/local
 ARG QPID_WORK_DIR=/var/lib/qpid
