@@ -12,13 +12,13 @@ WORKDIR ${BUILD_DIR}
 
 # Download Broker-J tarball
 ADD https://archive.apache.org/dist/qpid/broker-j/${BROKER_J_VERSION}/binaries/apache-qpid-broker-j-${BROKER_J_VERSION}-bin.tar.gz \
-    apache-qpid-broker-j.tar.gz
+    ${BUILD_DIR}/apache-qpid-broker-j.tar.gz
 # TODO: verify PGP signature?
 
-# Extract bin and lib dirs to ./out/
-RUN mkdir ./out
+# Extract qpid binaries to ./out/
+RUN mkdir ${BUILD_DIR}/out
 RUN apk add tar
-RUN tar xf apache-qpid-broker-j.tar.gz -C ${BUILD_DIR}/out --strip-components=2 qpid-broker/${BROKER_J_VERSION}/
+RUN tar xf ${BUILD_DIR}/apache-qpid-broker-j.tar.gz -C ${BUILD_DIR}/out --strip-components=2 qpid-broker/${BROKER_J_VERSION}/
 
 
 #############
@@ -36,8 +36,8 @@ ENV QPID_WORK=${QPID_WORK_DIR}
 # Create qpid user and group
 RUN groupadd --system --gid 1000 qpid && \
     useradd  --system --no-log-init \
-    --create-home --home-dir ${QPID_WORK_DIR} \
-    --uid 1000 --gid qpid qpid
+             --create-home --home-dir ${QPID_WORK_DIR} \
+             --uid 1000 --gid qpid qpid
 WORKDIR ${QPID_WORK_DIR}
 
 # Copy qpid binaries from build stage to /usr/local
@@ -47,7 +47,7 @@ COPY --from=builder ${BUILD_DIR}/out ${QPID_INSTALL_DIR}
 # Copy initial-config.json
 COPY initial-config.json ${QPID_HOME}/etc/
 
-COPY ./docker-entrypoint.sh /
+COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 USER qpid:qpid
