@@ -11,7 +11,8 @@ ARG BROKER_J_VERSION=7.1.4
 WORKDIR ${BUILD_DIR}
 
 # Download Broker-J tarball
-ADD https://archive.apache.org/dist/qpid/broker-j/${BROKER_J_VERSION}/binaries/apache-qpid-broker-j-${BROKER_J_VERSION}-bin.tar.gz apache-qpid-broker-j.tar.gz
+ADD https://archive.apache.org/dist/qpid/broker-j/${BROKER_J_VERSION}/binaries/apache-qpid-broker-j-${BROKER_J_VERSION}-bin.tar.gz \
+    apache-qpid-broker-j.tar.gz
 # TODO: verify PGP signature?
 
 # Extract bin and lib dirs to ./out/
@@ -33,7 +34,10 @@ ENV QPID_HOME=${QPID_INSTALL_DIR}
 ENV QPID_WORK=${QPID_WORK_DIR}
 
 # Create qpid user and group
-RUN groupadd --system --gid 1000 qpid && useradd --system --uid 1000 --home-dir ${QPID_WORK_DIR} --create-home --no-log-init --gid qpid qpid
+RUN groupadd --system --gid 1000 qpid && \
+    useradd  --system --no-log-init \
+    --create-home --home-dir ${QPID_WORK_DIR} \
+    --uid 1000 --gid qpid qpid
 WORKDIR ${QPID_WORK_DIR}
 
 # Copy qpid binaries from build stage to /usr/local
