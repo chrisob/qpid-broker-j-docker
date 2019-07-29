@@ -2,9 +2,16 @@
 
 # $IMAGE_NAME var is injected into the build so the tag is correct.
 
+if [ "${DOCKER_TAG}" != "latest" ]; then
+  BROKER_J_VERSION="${DOCKER_TAG}"
+else
+  BROKER_J_VERSION="7.1.4"
+fi
+
 docker build \
   --build-arg VCS_REF="$(git rev-parse --short HEAD)" \
   --build-arg BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
   --build-arg VERSION="${DOCKER_TAG}" \
+  --build-arg BROKER_J_VERSION="${BROKER_J_VERSION}" \
   --tag "${IMAGE_NAME}" \
   .

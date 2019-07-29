@@ -6,7 +6,8 @@ ARG BUILD_DIR=/out
 FROM alpine AS builder
 
 ARG BUILD_DIR
-ARG BROKER_J_VERSION=7.1.4
+# See hooks/build for default value
+ARG BROKER_J_VERSION
 
 WORKDIR ${BUILD_DIR}
 
