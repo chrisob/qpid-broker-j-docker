@@ -1,6 +1,12 @@
 #!/bin/bash
 
-# $IMAGE_NAME var is injected into the build so the tag is correct.
+# $IMAGE_NAME and $DOCKER_TAG are injected by docker hub into the build
+# https://docs.docker.com/docker-hub/builds/advanced/
+
+if [ -z "${IMAGE_NAME}" ]; then
+  DOCKER_TAG="latest"
+  IMAGE_NAME="chrisob/qpid-broker-j-docker:${DOCKER_TAG}"
+fi
 
 if [ "${DOCKER_TAG}" != "latest" ]; then
   BROKER_J_VERSION="${DOCKER_TAG}"
