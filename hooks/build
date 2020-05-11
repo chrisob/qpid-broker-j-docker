@@ -11,7 +11,7 @@ fi
 if [ "${DOCKER_TAG}" != "latest" ]; then
   BROKER_J_VERSION="${DOCKER_TAG}"
 else
-  BROKER_J_VERSION="7.1.4"
+  BROKER_J_VERSION="8.0.0"
 fi
 
 docker build \
